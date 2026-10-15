@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "node scripts/test.mjs",
+    "check": "node scripts/check.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "echarts": "^6.1.0"
+  }
+}

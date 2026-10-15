@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>哆米记账</title>
+	<style>
+		:root {
+			--pearl-50: #fbf8f2;
+			--pearl-100: #f4efe3;
+			--coral-300: #f0a48e;
+			--coral-500: #e07a5f;
+			--pink-300: #e8b4bc;
+			--murex-300: #b59ec2;
+			--murex-500: #8a6b96;
+			--foam-200: #bfe0d2;
+			--foam-400: #7fb9a6;
+			--foam-600: #4a8b79;
+			--sand-300: #d4b896;
+			--sand-400: #b89570;
+			--ocean-400: #3b6e89;
+			--ocean-600: #1f4e6e;
+			--ocean-800: #143a55;
+			--ocean-900: #0d2839;
+			--ink: #1a2530;
+			--ink-soft: #4a5764;
+			--ink-mute: #7e8896;
+			--line: rgba(20, 58, 85, 0.1);
+			--bg: #f7f2e8;
+		}
+
+		* { box-sizing: border-box; }
+
+		html,
+		body {
+			margin: 0;
+			min-height: 100%;
+			background: var(--bg);
+			color: var(--ink);
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+		}
+
+		body {
+			display: flex;
+			justify-content: center;
+			padding: 24px;
+			background:
+				radial-gradient(circle at 16% 0%, rgba(232, 180, 188, 0.45), transparent 320px),
+				radial-gradient(circle at 86% 10%, rgba(127, 185, 166, 0.34), transparent 340px),
+				var(--bg);
+		}
+
+		button {
+			border: 0;
+			font: inherit;
+			cursor: pointer;
+		}
+
+		.app-frame {
+			position: relative;
+			width: min(100%, 430px);
+			min-height: calc(100vh - 48px);
+			overflow: hidden;
+			border: 1px solid rgba(20, 58, 85, 0.1);
+			border-radius: 34px;
+			background: rgba(251, 248, 242, 0.78);
+			box-shadow: 0 28px 80px rgba(13, 40, 57, 0.18);
+		}
+
+		.app-screen {
+			display: none;
+			min-height: calc(100vh - 48px);
+			padding: 28px 20px 104px;
+			background:
+				radial-gradient(circle at 10% 2%, rgba(232, 180, 188, 0.42), transparent 210px),
+				radial-gradient(circle at 96% 6%, rgba(127, 185, 166, 0.28), transparent 210px),
+				var(--bg);
+		}
+
+		.app-screen.active { display: block; }
+
+		.top-row,
+		.brand-row,
+		.balance-head,
+		.balance-stats,
+		.section-title-row,
+		.transaction-item,
+		.legend-item,
+		.budget-top,
+		.bill-row,
+		.profile-stats,
+		.tab-bar {
+			display: flex;
+			align-items: center;
+		}
+
+		.top-row,
+		.balance-head,
+		.section-title-row,
+		.budget-top,
+		.bill-row,
+		.tab-bar { justify-content: space-between; }
+
+		.eyebrow {
+			display: block;
+			font-size: 11px;
+			letter-spacing: 0.16em;
+			color: var(--ocean-600);
+		}
+
+		.greeting {
+			display: block;
+			margin-top: 2px;
+			font-size: 20px;
+			font-weight: 700;
+			color: var(--ocean-900);
+		}
+
+		.icon-button,
+		.avatar,
+		.quick-icon,
+		.tx-icon,
+		.tab-icon,
+		.close-button {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.icon-button,
+		.close-button {
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.76);
+			color: var(--ocean-800);
+			box-shadow: 0 6px 20px rgba(20, 58, 85, 0.08);
+		}
+
+		.avatar {
+			width: 42px;
+			height: 42px;
+			padding: 3px;
+			border-radius: 50%;
+			background: linear-gradient(135deg, #f0d5d8, #b59ec2 48%, #7fb9a6);
+		}
+
+		.avatar::after {
+			content: "";
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			background: radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.18) 70%);
+		}
+
+		.brand-row {
+			gap: 12px;
+			margin-top: 28px;
+		}
+
+		.shell-mark {
+			position: relative;
+			width: 52px;
+			height: 52px;
+			flex: 0 0 52px;
+			border-radius: 52% 52% 46% 46%;
+			background: linear-gradient(135deg, #f8d9dc, #e8b4bc 38%, #b59ec2 72%, #7fb9a6);
+			box-shadow: 0 10px 20px rgba(201, 123, 134, 0.24);
+			overflow: hidden;
+		}
+
+		.shell-mark::before {
+			content: "";
+			position: absolute;
+			inset: 8px;
+			border-radius: 50%;
+			background: radial-gradient(circle at 32% 24%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.12) 72%);
+		}
+
+		.shell-mark::after {
+			content: "";
+			position: absolute;
+			inset: 8px 15px;
+			border-left: 1px solid rgba(255, 255, 255, 0.45);
+			border-right: 1px solid rgba(255, 255, 255, 0.38);
+		}
+
+		.app-name {
+			display: block;
+			font-size: 25px;
+			font-weight: 800;
+			letter-spacing: 0.04em;
+			color: var(--ocean-900);
+		}
+
+		.tagline {
+			display: block;
+			margin-top: 3px;
+			font-size: 13px;
+			color: var(--ink-soft);
+		}
+
+		.balance-card {
+			position: relative;
+			margin-top: 22px;
+			padding: 22px 22px 20px;
+			border-radius: 28px;
+			background: linear-gradient(135deg, #143a55 0%, #2c556f 100%);
+			color: var(--pearl-50);
+			overflow: hidden;
+			box-shadow: 0 18px 40px rgba(13, 40, 57, 0.24);
+		}
+
+		.balance-card::before,
+		.balance-card::after {
+			content: "";
+			position: absolute;
+			border-radius: 50%;
+			pointer-events: none;
+		}
+
+		.balance-card::before {
+			top: -48px;
+			right: -40px;
+			width: 150px;
+			height: 150px;
+			background: radial-gradient(circle, rgba(232, 180, 188, 0.28), transparent 66%);
+		}
+
+		.balance-card::after {
+			left: -42px;
+			bottom: -64px;
+			width: 138px;
+			height: 138px;
+			background: radial-gradient(circle, rgba(127, 185, 166, 0.2), transparent 64%);
+		}
+
+		.balance-head,
+		.balance-number,
+		.trend-pill,
+		.balance-stats { position: relative; z-index: 1; }
+
+		.balance-head {
+			font-size: 12px;
+			letter-spacing: 0.14em;
+			color: rgba(251, 248, 242, 0.64);
+		}
+
+		.period { letter-spacing: 0; }
+
+		.balance-number {
+			margin-top: 13px;
+			font-size: 42px;
+			font-weight: 800;
+			line-height: 1;
+		}
+
+		.currency {
+			margin-right: 4px;
+			font-size: 20px;
+			font-weight: 500;
+			opacity: 0.8;
+		}
+
+		.decimal {
+			font-size: 24px;
+			opacity: 0.72;
+		}
+
+		.trend-pill {
+			display: inline-flex;
+			margin-top: 12px;
+			padding: 5px 11px;
+			border-radius: 999px;
+			background: rgba(191, 224, 210, 0.14);
+			color: var(--foam-200);
+			font-size: 12px;
+		}
+
+		.balance-stats {
+			gap: 18px;
+			margin-top: 18px;
+			padding-top: 16px;
+			border-top: 1px solid rgba(251, 248, 242, 0.12);
+		}
+
+		.balance-stats > div { flex: 1; }
+
+		.balance-stats > div + div {
+			padding-left: 18px;
+			border-left: 1px solid rgba(251, 248, 242, 0.12);
+		}
+
+		.payday-strip {
+			position: relative;
+			z-index: 1;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			margin-top: 17px;
+			padding-top: 16px;
+			border-top: 1px solid rgba(251, 248, 242, 0.14);
+		}
+
+		.payday-strip-copy {
+			min-width: 0;
+		}
+
+		.payday-strip-label,
+		.payday-strip-value {
+			display: block;
+		}
+
+		.payday-strip-label {
+			font-size: 11px;
+			color: rgba(251, 248, 242, 0.6);
+		}
+
+		.payday-strip-value {
+			margin-top: 4px;
+			font-size: 16px;
+			font-weight: 800;
+			color: var(--foam-200);
+		}
+
+		.payday-strip-meta {
+			flex: 0 0 auto;
+			font-size: 11px;
+			color: rgba(251, 248, 242, 0.72);
+		}
+
+		.stat-label {
+			display: block;
+			font-size: 11px;
+			color: rgba(251, 248, 242, 0.58);
+		}
+
+		.stat-value {
+			display: block;
+			margin-top: 4px;
+			font-size: 17px;
+			font-weight: 800;
+		}
+
+		.income { color: var(--foam-200); }
+		.expense { color: var(--coral-300); }
+
+		.quick-grid {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 9px;
+			margin-top: 16px;
+		}
+
+		.quick-item {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 6px;
+			min-width: 0;
+			font-size: 12px;
+			color: var(--ink-soft);
+		}
+
+		.quick-icon {
+			width: 48px;
+			height: 48px;
+			border: 1px solid var(--line);
+			border-radius: 15px;
+			background: #fff;
+			box-shadow: 0 6px 18px rgba(20, 58, 85, 0.06);
+			font-weight: 800;
+		}
+
+		.section-title-row { margin: 22px 0 10px; }
+
+		.section-title {
+			font-size: 17px;
+			font-weight: 800;
+			color: var(--ink);
+		}
+
+		.section-link {
+			font-size: 12px;
+			color: var(--ink-mute);
+		}
+
+		.panel,
+		.transaction-list,
+		.insight-card,
+		.day-group,
+		.profile-card {
+			border: 1px solid var(--line);
+			border-radius: 22px;
+			background: rgba(255, 255, 255, 0.78);
+			box-shadow: 0 10px 30px rgba(20, 58, 85, 0.06);
+			backdrop-filter: blur(18px);
+		}
+
+		.transaction-list { padding: 5px 15px; }
+
+		.transaction-item {
+			gap: 12px;
+			padding: 13px 0;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.transaction-item:last-child { border-bottom: 0; }
+
+		.tx-icon {
+			width: 38px;
+			height: 38px;
+			flex: 0 0 38px;
+			border-radius: 13px;
+			font-size: 12px;
+			font-weight: 800;
+		}
+
+		.tx-info {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.tx-name {
+			display: block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			font-size: 14px;
+			font-weight: 750;
+		}
+
+		.tx-meta {
+			display: block;
+			margin-top: 2px;
+			font-size: 11px;
+			color: var(--ink-mute);
+		}
+
+		.tx-amount {
+			font-size: 15px;
+			font-weight: 850;
+			color: var(--ink);
+		}
+
+		.tx-amount.incoming { color: var(--foam-600); }
+
+		.insight-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 14px;
+		}
+
+		.insight-card { padding: 16px; }
+
+		.donut-card {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+		}
+
+		.donut {
+			position: relative;
+			width: 112px;
+			height: 112px;
+			flex: 0 0 112px;
+			border-radius: 50%;
+			background: conic-gradient(var(--coral-500) 0 31%, var(--foam-400) 31% 55%, var(--murex-300) 55% 75%, var(--sand-300) 75% 91%, var(--pearl-100) 91% 100%);
+		}
+
+		.donut-hole {
+			position: absolute;
+			inset: 16px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			background: var(--pearl-50);
+		}
+
+		.donut-label {
+			font-size: 11px;
+			color: var(--ink-mute);
+		}
+
+		.donut-value {
+			margin-top: 2px;
+			font-size: 15px;
+			font-weight: 850;
+			color: var(--ocean-800);
+		}
+
+		.legend-list { flex: 1; }
+
+		.legend-item {
+			gap: 8px;
+			padding: 4px 0;
+			font-size: 12px;
+			color: var(--ink-soft);
+		}
+
+		.legend-item span:nth-child(2) { flex: 1; }
+
+		.legend-dot {
+			width: 9px;
+			height: 9px;
+			border-radius: 50%;
+		}
+
+		.budget-row + .budget-row { margin-top: 14px; }
+
+		.budget-top {
+			font-size: 13px;
+			color: var(--ink-soft);
+		}
+
+		.progress-track {
+			margin-top: 7px;
+			height: 8px;
+			border-radius: 999px;
+			background: var(--pearl-100);
+			overflow: hidden;
+		}
+
+		.progress-fill {
+			height: 100%;
+			border-radius: 999px;
+		}
+
+		.coral { background: #f8d7c8; color: var(--coral-500); }
+		.ocean { background: #d5e8e8; color: var(--ocean-400); }
+		.murex { background: #ebddf0; color: var(--murex-500); }
+		.sand { background: #fbe5c8; color: var(--sand-400); }
+		.foam { background: #d4ecdf; color: var(--foam-600); }
+		.tone-blue { background: #d4e1e8; color: var(--ocean-600); }
+		.tone-mint { background: #d6eddf; color: #3f916f; }
+		.tone-cyan { background: #d2edf1; color: #1f8695; }
+		.tone-gold { background: #f3e4b8; color: #b98925; }
+		.legend-dot.coral,
+		.progress-fill.coral { background: var(--coral-500); }
+		.legend-dot.murex,
+		.progress-fill.murex { background: var(--murex-300); }
+		.legend-dot.foam,
+		.progress-fill.foam { background: var(--foam-400); }
+		.legend-dot.sand { background: var(--sand-300); }
+
+		.screen-heading {
+			margin: 8px 0 16px;
+		}
+
+		.screen-heading h1 {
+			margin: 0;
+			font-size: 28px;
+			line-height: 1.1;
+			color: var(--ocean-900);
+		}
+
+		.screen-heading p {
+			margin: 6px 0 0;
+			font-size: 13px;
+			color: var(--ink-soft);
+		}
+
+		.month-card {
+			margin-bottom: 16px;
+			padding: 18px;
+			border-radius: 24px;
+			background: linear-gradient(135deg, #f0d5d8, #b59ec2 52%, #7fb9a6);
+			color: var(--ocean-900);
+		}
+
+		.month-card .label {
+			font-size: 12px;
+			letter-spacing: 0.12em;
+			opacity: 0.75;
+		}
+
+		.month-card .value {
+			display: block;
+			margin-top: 4px;
+			font-size: 34px;
+			font-weight: 850;
+		}
+
+		.day-group {
+			padding: 6px 15px;
+		}
+
+		.day-group + .day-group { margin-top: 13px; }
+
+		.day-title {
+			padding: 10px 0 4px;
+			font-size: 12px;
+			font-weight: 800;
+			color: var(--ocean-800);
+		}
+
+		.bill-row {
+			gap: 12px;
+			padding: 12px 0;
+			border-top: 1px solid var(--line);
+		}
+
+		.stats-tabs {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 6px;
+			margin-bottom: 16px;
+			padding: 4px;
+			border-radius: 999px;
+			background: var(--pearl-100);
+		}
+
+		.stats-tabs button {
+			padding: 8px 0;
+			border-radius: 999px;
+			background: transparent;
+			color: var(--ink-mute);
+			font-size: 13px;
+			font-weight: 700;
+		}
+
+		.stats-tabs button.active {
+			background: #fff;
+			color: var(--ocean-800);
+			box-shadow: 0 4px 12px rgba(20, 58, 85, 0.08);
+		}
+
+		.trend-bars {
+			display: flex;
+			align-items: flex-end;
+			gap: 13px;
+			height: 150px;
+			padding-top: 14px;
+		}
+
+		.trend-bars .bar {
+			flex: 1;
+			min-width: 0;
+			border-radius: 999px 999px 8px 8px;
+			background: linear-gradient(180deg, var(--pink-300), var(--murex-300));
+		}
+
+		.trend-bars .bar:nth-child(2n) { background: linear-gradient(180deg, var(--foam-400), var(--ocean-400)); }
+
+		.category-summary {
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			gap: 16px;
+			margin-top: 18px;
+			padding: 20px;
+			border-radius: 24px;
+			background: linear-gradient(135deg, #f0d5d8, #b59ec2 54%, #7fb9a6);
+			box-shadow: 0 14px 32px rgba(181, 158, 194, 0.2);
+		}
+
+		.category-summary-label,
+		.category-summary-value,
+		.category-summary-copy {
+			display: block;
+		}
+
+		.category-summary-label {
+			font-size: 12px;
+			letter-spacing: 0.1em;
+			color: rgba(13, 40, 57, 0.68);
+		}
+
+		.category-summary-value {
+			margin-top: 4px;
+			font-size: 32px;
+			font-weight: 850;
+			color: var(--ocean-900);
+		}
+
+		.category-summary-copy {
+			max-width: 150px;
+			font-size: 12px;
+			line-height: 1.55;
+			text-align: right;
+			color: var(--ocean-600);
+		}
+
+		.category-list {
+			display: grid;
+			gap: 12px;
+		}
+
+		.category-item {
+			display: flex;
+			align-items: center;
+			gap: 13px;
+			padding: 15px;
+			border: 1px solid var(--line);
+			border-radius: 21px;
+			background: rgba(255, 255, 255, 0.8);
+			box-shadow: 0 8px 22px rgba(20, 58, 85, 0.05);
+		}
+
+		.category-icon {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 48px;
+			height: 48px;
+			flex: 0 0 48px;
+			border-radius: 16px;
+			font-size: 18px;
+			font-weight: 850;
+		}
+
+		.category-copy {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.category-copy-head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 8px;
+		}
+
+		.category-copy-head strong,
+		.category-copy-head span,
+		.category-amount {
+			display: block;
+		}
+
+		.category-copy-head strong {
+			font-size: 14px;
+		}
+
+		.category-copy-head span {
+			font-size: 12px;
+			color: var(--ink-mute);
+		}
+
+		.category-amount {
+			margin-top: 4px;
+			font-size: 14px;
+			font-weight: 850;
+			color: var(--ocean-800);
+		}
+
+		.category-progress {
+			height: 7px;
+			margin-top: 8px;
+			border-radius: 999px;
+			background: var(--pearl-100);
+			overflow: hidden;
+		}
+
+		.category-progress span {
+			display: block;
+			height: 100%;
+			border-radius: inherit;
+		}
+
+		.detail-summary {
+			margin-top: 18px;
+			padding: 22px;
+			border-radius: 26px;
+			background: linear-gradient(135deg, #143a55 0%, #2c556f 100%);
+			color: var(--pearl-50);
+			box-shadow: 0 18px 40px rgba(13, 40, 57, 0.22);
+		}
+
+		.detail-summary-label,
+		.detail-summary-value,
+		.detail-summary-copy {
+			display: block;
+		}
+
+		.detail-summary-label {
+			font-size: 11px;
+			letter-spacing: 0.12em;
+			color: rgba(251, 248, 242, 0.62);
+		}
+
+		.detail-summary-value {
+			margin-top: 8px;
+			font-size: 36px;
+			font-weight: 850;
+			line-height: 1;
+		}
+
+		.detail-summary-copy {
+			margin-top: 10px;
+			font-size: 12px;
+			line-height: 1.6;
+			color: rgba(251, 248, 242, 0.72);
+		}
+
+		.detail-summary-stats {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 8px;
+			margin-top: 18px;
+			padding-top: 15px;
+			border-top: 1px solid rgba(251, 248, 242, 0.14);
+		}
+
+		.detail-summary-stats strong,
+		.detail-summary-stats span {
+			display: block;
+		}
+
+		.detail-summary-stats strong {
+			font-size: 16px;
+			color: var(--foam-200);
+		}
+
+		.detail-summary-stats span {
+			margin-top: 4px;
+			font-size: 10px;
+			color: rgba(251, 248, 242, 0.58);
+		}
+
+		.detail-top {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 10px;
+			color: var(--ocean-800);
+		}
+
+		.detail-top button {
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.76);
+			color: var(--ocean-800);
+			font-size: 25px;
+			line-height: 1;
+		}
+
+		.detail-top span {
+			font-size: 13px;
+			font-weight: 750;
+			letter-spacing: 0.08em;
+		}
+
+		.shell-stage {
+			position: relative;
+			margin-top: 18px;
+			padding: 24px 20px 18px;
+			border-radius: 26px;
+			background: linear-gradient(160deg, #e0f2fe 0%, #cffafe 42%, #e0e7ff 100%);
+			text-align: center;
+			overflow: hidden;
+		}
+
+		.shell-stage::after {
+			content: "";
+			position: absolute;
+			right: -48px;
+			top: -58px;
+			width: 170px;
+			height: 170px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.36);
+		}
+
+		.shell-name,
+		.shell-level,
+		.xp-top,
+		.shell-stats span {
+			display: block;
+			position: relative;
+			z-index: 1;
+		}
+
+		.shell-name {
+			font-size: 21px;
+			font-weight: 850;
+			color: var(--ink);
+		}
+
+		.shell-level {
+			margin-top: 5px;
+			font-size: 12px;
+			font-weight: 750;
+			color: #1f8695;
+		}
+
+		.shell-visual {
+			position: relative;
+			z-index: 1;
+			width: 150px;
+			height: 150px;
+			margin: 14px auto 10px;
+		}
+
+		.shell-visual::before {
+			content: "";
+			position: absolute;
+			inset: 12px;
+			border: 1px dashed rgba(31, 134, 149, 0.38);
+			border-radius: 50%;
+		}
+
+		.shell-visual img {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+
+		.xp-top {
+			display: flex;
+			justify-content: space-between;
+			margin: 0 6px 6px;
+			font-size: 12px;
+			color: var(--ink-soft);
+		}
+
+		.xp-bar {
+			position: relative;
+			z-index: 1;
+			height: 8px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.76);
+			overflow: hidden;
+		}
+
+		.xp-bar span {
+			display: block;
+			width: 68%;
+			height: 100%;
+			border-radius: inherit;
+			background: linear-gradient(90deg, #22d3ee, #0ea5e9);
+		}
+
+		.shell-stats {
+			position: relative;
+			z-index: 1;
+			display: flex;
+			gap: 8px;
+			margin-top: 16px;
+		}
+
+		.shell-stats div {
+			flex: 1;
+			padding: 10px 4px;
+			border-radius: 14px;
+			background: rgba(255, 255, 255, 0.5);
+		}
+
+		.shell-stats strong,
+		.shell-stats small {
+			display: block;
+		}
+
+		.shell-stats strong {
+			font-size: 16px;
+			color: var(--ink);
+		}
+
+		.shell-stats small {
+			margin-top: 3px;
+			font-size: 10px;
+			color: var(--ink-mute);
+		}
+
+		.growth-list {
+			padding: 3px 15px;
+			border: 1px solid var(--line);
+			border-radius: 22px;
+			background: rgba(255, 255, 255, 0.78);
+		}
+
+		.growth-row {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 13px 0;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.growth-row:last-child { border-bottom: 0; }
+
+		.growth-icon {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 36px;
+			height: 36px;
+			flex: 0 0 36px;
+			border-radius: 12px;
+			font-size: 14px;
+			font-weight: 850;
+		}
+
+		.growth-copy {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.growth-copy strong,
+		.growth-copy span {
+			display: block;
+		}
+
+		.growth-copy strong {
+			font-size: 13px;
+		}
+
+		.growth-copy span {
+			margin-top: 3px;
+			font-size: 10px;
+			line-height: 1.45;
+			color: var(--ink-mute);
+		}
+
+		.growth-xp {
+			flex: 0 0 auto;
+			font-size: 11px;
+			font-weight: 850;
+			color: var(--foam-600);
+		}
+
+		.detail-screen .screen-heading { margin-bottom: 0; }
+		.app-frame.detail-mode .add-sheet,
+		.app-frame.detail-mode .tab-bar { display: none; }
+
+		.profile-card {
+			padding: 22px;
+			text-align: center;
+		}
+
+		.profile-card .avatar {
+			width: 78px;
+			height: 78px;
+			margin: 0 auto 12px;
+		}
+
+		.profile-card h2 {
+			margin: 0;
+			font-size: 20px;
+			color: var(--ocean-900);
+		}
+
+		.profile-card p {
+			margin: 4px 0 16px;
+			font-size: 13px;
+			color: var(--ink-mute);
+		}
+
+		.profile-stats {
+			gap: 8px;
+			padding-top: 16px;
+			border-top: 1px solid var(--line);
+		}
+
+		.profile-stats div { flex: 1; }
+
+		.profile-stats strong {
+			display: block;
+			font-size: 20px;
+			color: var(--ocean-800);
+		}
+
+		.profile-stats span {
+			display: block;
+			margin-top: 3px;
+			font-size: 11px;
+			color: var(--ink-mute);
+		}
+
+		.add-sheet {
+			position: absolute;
+			inset: auto 0 0;
+			z-index: 40;
+			display: none;
+			padding: 22px 20px 24px;
+			border-radius: 30px 30px 0 0;
+			background: var(--pearl-50);
+			box-shadow: 0 -24px 60px rgba(13, 40, 57, 0.18);
+		}
+
+		.add-sheet.open { display: block; }
+
+		.sheet-head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 16px;
+		}
+
+		.sheet-head h2 {
+			margin: 0;
+			font-size: 18px;
+		}
+
+		.amount-input {
+			width: 100%;
+			padding: 18px;
+			border: 1px solid var(--line);
+			border-radius: 20px;
+			background: #fff;
+			font-size: 34px;
+			font-weight: 850;
+			text-align: center;
+			color: var(--ink);
+		}
+
+		.category-chips {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 8px;
+			margin-top: 14px;
+		}
+
+		.category-chips button {
+			padding: 12px 4px;
+			border-radius: 16px;
+			background: #fff;
+			color: var(--ink-soft);
+			font-size: 12px;
+			font-weight: 700;
+		}
+
+		.primary-button {
+			width: 100%;
+			margin-top: 16px;
+			padding: 15px;
+			border-radius: 999px;
+			background: var(--ocean-800);
+			color: var(--pearl-50);
+			font-weight: 800;
+		}
+
+		.tab-bar {
+			position: absolute;
+			left: 18px;
+			right: 18px;
+			bottom: 18px;
+			z-index: 30;
+			padding: 10px 12px 12px;
+			border: 1px solid var(--line);
+			border-radius: 26px;
+			background: rgba(255, 255, 255, 0.9);
+			box-shadow: 0 14px 42px rgba(13, 40, 57, 0.14);
+			backdrop-filter: blur(22px);
+		}
+
+		.tab-item {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+			align-items: center;
+			gap: 2px;
+			min-width: 0;
+			background: transparent;
+			color: var(--ink-mute);
+		}
+
+		.tab-item.active { color: var(--ocean-800); }
+
+		.tab-icon {
+			width: 27px;
+			height: 27px;
+			border-radius: 10px;
+			font-size: 12px;
+			font-weight: 850;
+		}
+
+		.tab-label { font-size: 10px; }
+
+		.tab-item.add { flex: 0 0 54px; }
+
+		.tab-item.add .tab-icon {
+			width: 54px;
+			height: 54px;
+			margin-top: -28px;
+			border: 4px solid var(--pearl-50);
+			border-radius: 50%;
+			background: linear-gradient(135deg, var(--pink-300), var(--murex-300));
+			color: #fff;
+			font-size: 29px;
+			box-shadow: 0 14px 24px rgba(181, 158, 194, 0.42);
+		}
+
+		@media (max-width: 520px) {
+			body { padding: 0; }
+			.app-frame,
+			.app-screen {
+				width: 100%;
+				min-height: 100vh;
+				border: 0;
+				border-radius: 0;
+			}
+			.tab-bar { position: fixed; }
+		}
+	</style>
+</head>
+<body>
+	<main class="app-frame" aria-label="哆米记账应用">
+		<section class="app-screen active" data-screen="home">
+			<div class="top-row">
+				<div>
+					<span class="eyebrow">GOOD MORNING</span>
+					<span class="greeting">早安，拾贝人</span>
+				</div>
+				<div class="avatar" aria-hidden="true"></div>
+			</div>
+
+			<div class="brand-row">
+				<div class="shell-mark" aria-hidden="true"></div>
+				<div>
+					<span class="app-name">哆米记账</span>
+					<span class="tagline">跟着发薪日，安排这一周期的钱</span>
+				</div>
+			</div>
+
+			<div class="balance-card">
+				<div class="balance-head"><span>本月结余</span><span class="period">2026.09</span></div>
+				<div class="balance-number"><span class="currency">¥</span>8,486<span class="decimal">.50</span></div>
+				<div class="trend-pill">较上月 +12.4%</div>
+				<div class="balance-stats">
+					<div><span class="stat-label">收入</span><span class="stat-value income">¥12,800</span></div>
+					<div><span class="stat-label">支出</span><span class="stat-value expense">¥4,313</span></div>
+				</div>
+				<div class="payday-strip">
+					<div class="payday-strip-copy">
+						<span class="payday-strip-label">本期自由预算 · 9/10 - 10/9</span>
+						<span class="payday-strip-value">剩余 ¥6,420</span>
+					</div>
+					<span class="payday-strip-meta">日均 ¥247 ›</span>
+				</div>
+			</div>
+
+			<div class="quick-grid">
+				<div class="quick-item"><div class="quick-icon coral">薪</div><span>周期预算</span></div>
+				<div class="quick-item"><div class="quick-icon ocean">扣</div><span>自动扣费</span></div>
+				<div class="quick-item"><div class="quick-icon murex">分</div><span>共同分账</span></div>
+				<div class="quick-item"><div class="quick-icon sand">贝</div><span>记录成长</span></div>
+			</div>
+
+			<div class="section-title-row"><span class="section-title">本月流水</span><button class="section-link" data-nav="category">查看</button></div>
+			<div class="transaction-list">
+				<div class="transaction-item"><div class="tx-icon coral">食</div><div class="tx-info"><span class="tx-name">Blue Bottle 咖啡</span><span class="tx-meta">10:24 · 餐饮</span></div><span class="tx-amount">-¥38</span></div>
+				<div class="transaction-item"><div class="tx-icon ocean">行</div><div class="tx-info"><span class="tx-name">地铁通勤</span><span class="tx-meta">08:42 · 交通</span></div><span class="tx-amount">-¥6</span></div>
+				<div class="transaction-item"><div class="tx-icon foam">入</div><div class="tx-info"><span class="tx-name">项目尾款到账</span><span class="tx-meta">09:15 · 收入</span></div><span class="tx-amount incoming">+¥3,200</span></div>
+			</div>
+		</section>
+
+		<section class="app-screen" data-screen="category">
+			<div class="screen-heading"><h1>分类</h1><p>按分类查看每一笔支出，快速找到消费重点。</p></div>
+			<div class="category-summary">
+				<div><span class="category-summary-label">9 月已记录</span><span class="category-summary-value">23 笔</span></div>
+				<span class="category-summary-copy">餐饮是本月主要支出，占比 31%。</span>
+			</div>
+			<div class="section-title-row"><span class="section-title">支出分类</span><span class="section-link">2026 年 9 月</span></div>
+			<div class="category-list">
+				<div class="category-item"><div class="category-icon coral">食</div><div class="category-copy"><div class="category-copy-head"><strong>餐饮</strong><span>31%</span></div><span class="category-amount">¥1,240</span><div class="category-progress"><span style="width: 78%; background: var(--coral-500)"></span></div></div></div>
+				<div class="category-item"><div class="category-icon ocean">行</div><div class="category-copy"><div class="category-copy-head"><strong>交通</strong><span>18%</span></div><span class="category-amount">¥716</span><div class="category-progress"><span style="width: 48%; background: var(--ocean-400)"></span></div></div></div>
+				<div class="category-item"><div class="category-icon murex">物</div><div class="category-copy"><div class="category-copy-head"><strong>购物</strong><span>20%</span></div><span class="category-amount">¥880</span><div class="category-progress"><span style="width: 58%; background: var(--murex-300)"></span></div></div></div>
+				<div class="category-item"><div class="category-icon sand">乐</div><div class="category-copy"><div class="category-copy-head"><strong>娱乐</strong><span>16%</span></div><span class="category-amount">¥640</span><div class="category-progress"><span style="width: 42%; background: var(--sand-400)"></span></div></div></div>
+				<div class="category-item"><div class="category-icon foam">人</div><div class="category-copy"><div class="category-copy-head"><strong>人情</strong><span>15%</span></div><span class="category-amount">¥594</span><div class="category-progress"><span style="width: 39%; background: var(--foam-400)"></span></div></div></div>
+			</div>
+		</section>
+
+		<section class="app-screen" data-screen="stats">
+			<div class="screen-heading"><h1>数据洞察</h1><p>看看这个月钱都去哪了。</p></div>
+			<div class="stats-tabs"><button>周</button><button class="active">月</button><button>季</button><button>年</button></div>
+			<div class="insight-grid">
+				<div class="insight-card donut-card">
+					<div class="donut"><div class="donut-hole"><span class="donut-label">总支出</span><span class="donut-value">¥4,313</span></div></div>
+					<div class="legend-list">
+						<div class="legend-item"><span class="legend-dot coral"></span><span>餐饮</span><span>31%</span></div>
+						<div class="legend-item"><span class="legend-dot foam"></span><span>人情</span><span>24%</span></div>
+						<div class="legend-item"><span class="legend-dot murex"></span><span>购物</span><span>20%</span></div>
+						<div class="legend-item"><span class="legend-dot sand"></span><span>娱乐</span><span>16%</span></div>
+					</div>
+				</div>
+				<div class="insight-card">
+					<div class="section-title-row" style="margin-top:0"><span class="section-title">最近 6 个月</span><span class="section-link">+12%</span></div>
+					<div class="trend-bars"><div class="bar" style="height:30%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:38%"></div><div class="bar" style="height:72%"></div><div class="bar" style="height:100%"></div><div class="bar" style="height:58%"></div></div>
+				</div>
+				<div class="insight-card">
+					<div class="section-title-row" style="margin-top:0"><span class="section-title">预算执行</span><span class="section-link">本月</span></div>
+					<div class="budget-row"><div class="budget-top"><span>餐饮</span><span>¥1,240 / 2,000</span></div><div class="progress-track"><div class="progress-fill coral" style="width:62%"></div></div></div>
+					<div class="budget-row"><div class="budget-top"><span>购物</span><span>¥880 / 1,000</span></div><div class="progress-track"><div class="progress-fill murex" style="width:88%"></div></div></div>
+					<div class="budget-row"><div class="budget-top"><span>交通</span><span>¥216 / 600</span></div><div class="progress-track"><div class="progress-fill foam" style="width:36%"></div></div></div>
+				</div>
+			</div>
+		</section>
+
+		<section class="app-screen" data-screen="profile">
+			<div class="screen-heading"><h1>我的</h1><p>管理预算、资产账户与记账习惯。</p></div>
+			<div class="profile-card">
+				<div class="avatar" aria-hidden="true"></div>
+				<h2>拾贝人 · 沙粒</h2>
+				<p>LV.3 · 已连续记账 86 天</p>
+				<div class="profile-stats"><div><strong>86</strong><span>坚持天数</span></div><div><strong>312</strong><span>累计笔数</span></div><div><strong>23</strong><span>贝壳徽章</span></div></div>
+			</div>
+			<div class="transaction-list" style="margin-top:16px">
+				<div class="transaction-item"><div class="tx-icon ocean">预</div><div class="tx-info"><span class="tx-name">预算管理</span><span class="tx-meta">为分类设置月度额度</span></div><span class="section-link">进入</span></div>
+				<div class="transaction-item"><div class="tx-icon murex">账</div><div class="tx-info"><span class="tx-name">账户与钱包</span><span class="tx-meta">现金、银行卡、电子钱包</span></div><span class="section-link">进入</span></div>
+				<div class="transaction-item"><div class="tx-icon sand">设</div><div class="tx-info"><span class="tx-name">偏好设置</span><span class="tx-meta">主题、提醒、数据备份</span></div><span class="section-link">进入</span></div>
+			</div>
+		</section>
+
+		<section class="app-screen detail-screen" data-screen="payday">
+			<div class="detail-top"><button data-nav="home" aria-label="返回">‹</button><span>PAYDAY BUDGET</span><span></span></div>
+			<div class="screen-heading"><h1>发薪日周期预算</h1><p>从发薪日到一个周期结束，先预留固定支出，再安排自由花费。</p></div>
+			<div class="detail-summary">
+				<span class="detail-summary-label">本期预算 · 9/10 - 10/9</span>
+				<span class="detail-summary-value">¥6,420</span>
+				<span class="detail-summary-copy">月薪 ¥10,000，已预留固定支出 ¥3,580，当前已支出 ¥2,318。</span>
+				<div class="detail-summary-stats">
+					<div><strong>¥6,420</strong><span>剩余可用</span></div>
+					<div><strong>¥247</strong><span>日均可用</span></div>
+					<div><strong>¥3,580</strong><span>固定预留</span></div>
+				</div>
+			</div>
+			<div class="section-title-row"><span class="section-title">固定支出预留</span><span class="section-link">合计 ¥3,580</span></div>
+			<div class="category-list">
+				<div class="category-item"><div class="category-icon ocean">房</div><div class="category-copy"><div class="category-copy-head"><strong>房租</strong><span>每月 10 日</span></div><span class="category-amount">¥2,800</span></div></div>
+				<div class="category-item"><div class="category-icon sand">水</div><div class="category-copy"><div class="category-copy-head"><strong>水电与通信</strong><span>自动预留</span></div><span class="category-amount">¥780</span></div></div>
+			</div>
+		</section>
+
+		<section class="app-screen detail-screen" data-screen="subscriptions">
+			<div class="detail-top"><button data-nav="home" aria-label="返回">‹</button><span>SUBSCRIPTION CALENDAR</span><span></span></div>
+			<div class="screen-heading"><h1>自动扣费</h1><p>把订阅金额和扣费日放在一起，续费前先看清安排。</p></div>
+			<div class="detail-summary">
+				<span class="detail-summary-label">订阅月均支出</span>
+				<span class="detail-summary-value">¥186.00</span>
+				<span class="detail-summary-copy">共 6 项，近 14 天预计扣费 ¥72.00。</span>
+				<div class="detail-summary-stats">
+					<div><strong>6 项</strong><span>订阅项目</span></div>
+					<div><strong>3 项</strong><span>月度扣费</span></div>
+					<div><strong>¥2,232</strong><span>年度预估</span></div>
+				</div>
+			</div>
+			<div class="section-title-row"><span class="section-title">近期扣费</span><span class="section-link">按日期排序</span></div>
+			<div class="category-list">
+				<div class="category-item"><div class="category-icon murex">音</div><div class="category-copy"><div class="category-copy-head"><strong>音乐会员</strong><span>9 月 21 日</span></div><span class="category-amount">¥18.00 / 月</span></div></div>
+				<div class="category-item"><div class="category-icon ocean">云</div><div class="category-copy"><div class="category-copy-head"><strong>云存储</strong><span>9 月 28 日</span></div><span class="category-amount">¥54.00 / 月</span></div></div>
+			</div>
+		</section>
+
+		<section class="app-screen detail-screen" data-screen="aa">
+			<div class="detail-top"><button data-nav="home" aria-label="返回">‹</button><span>SHARED BILLS</span><span></span></div>
+			<div class="screen-heading"><h1>共同分账</h1><p>聚餐、房租等共同费用按人数拆清，进度与待收统一查看。</p></div>
+			<div class="detail-summary">
+				<span class="detail-summary-label">进行中的分账</span>
+				<span class="detail-summary-value">2 笔</span>
+				<span class="detail-summary-copy">当前待收 ¥428.00，已结算记录会收进历史列表。</span>
+				<div class="detail-summary-stats">
+					<div><strong>¥428</strong><span>待收金额</span></div>
+					<div><strong>3 / 5</strong><span>已支付人数</span></div>
+					<div><strong>¥214</strong><span>人均金额</span></div>
+				</div>
+			</div>
+			<div class="section-title-row"><span class="section-title">进行中</span><span class="section-link">共 2 笔</span></div>
+			<div class="category-list">
+				<div class="category-item"><div class="category-icon coral">聚</div><div class="category-copy"><div class="category-copy-head"><strong>周五聚餐</strong><span>3 / 5 已支付</span></div><span class="category-amount">总金额 ¥1,070 · 人均 ¥214</span></div></div>
+				<div class="category-item"><div class="category-icon foam">租</div><div class="category-copy"><div class="category-copy-head"><strong>合租水电</strong><span>2 / 3 已支付</span></div><span class="category-amount">总金额 ¥690 · 人均 ¥230</span></div></div>
+			</div>
+		</section>
+
+		<section class="app-screen detail-screen" data-screen="shell">
+			<div class="detail-top"><button data-nav="home" aria-label="返回">‹</button><span>SHELL GROWTH</span><span></span></div>
+			<div class="screen-heading"><h1>记录成长</h1><p>连续记录、逐级积累，用贝壳阶段留下你的记账轨迹。</p></div>
+			<div class="shell-stage">
+				<span class="shell-name">贝贝 · 珍珠贝</span>
+				<span class="shell-level">Lv.4 ｜ 成长贝</span>
+				<div class="shell-visual"><img src="static/images/shellLevel/shell_lv4.png" alt="珍珠贝"></div>
+				<div class="xp-top"><span>经验值 680 / 1,000</span><span>68%</span></div>
+				<div class="xp-bar"><span></span></div>
+				<div class="shell-stats"><div><strong>86 天</strong><small>连续记账</small></div><div><strong>312 笔</strong><small>累计记账</small></div><div><strong>8 枚</strong><small>获得徽章</small></div></div>
+			</div>
+			<div class="section-title-row"><span class="section-title">成就徽章</span><span class="section-link">已解锁 8 / 12</span></div>
+			<div class="category-list">
+				<div class="category-item"><div class="category-icon tone-cyan">✦</div><div class="category-copy"><div class="category-copy-head"><strong>连续记录 7 天</strong><span>已解锁</span></div><span class="category-amount">获得 +10 XP</span></div></div>
+				<div class="category-item"><div class="category-icon tone-gold">★</div><div class="category-copy"><div class="category-copy-head"><strong>本月记账 20 笔</strong><span>已解锁</span></div><span class="category-amount">获得 +50 XP</span></div></div>
+			</div>
+			<div class="section-title-row"><span class="section-title">今日成长</span></div>
+			<div class="growth-list">
+				<div class="growth-row"><div class="growth-icon tone-blue">¥</div><div class="growth-copy"><strong>每记一笔账</strong><span>记录收入或支出，持续积累经验</span></div><span class="growth-xp">+10 XP</span></div>
+				<div class="growth-row"><div class="growth-icon tone-mint">↗</div><div class="growth-copy"><strong>连续记账加成</strong><span>连续记录 3 天起获得加成</span></div><span class="growth-xp">+10 XP</span></div>
+			</div>
+		</section>
+
+		<div class="add-sheet" id="addSheet" aria-hidden="true">
+			<div class="sheet-head"><button class="close-button" id="closeAdd" aria-label="关闭">×</button><h2>记一笔</h2><button class="section-link">保存</button></div>
+			<div class="amount-input">¥128.00</div>
+			<div class="category-chips"><button class="coral">餐饮</button><button>交通</button><button>购物</button><button>收入</button></div>
+			<button class="primary-button" id="finishAdd">完成</button>
+		</div>
+
+		<nav class="tab-bar" aria-label="主要导航">
+			<button class="tab-item active" data-nav="home"><span class="tab-icon">首</span><span class="tab-label">首页</span></button>
+			<button class="tab-item" data-nav="category"><span class="tab-icon">分</span><span class="tab-label">分类</span></button>
+			<button class="tab-item add" id="openAdd"><span class="tab-icon">+</span></button>
+			<button class="tab-item" data-nav="stats"><span class="tab-icon">图</span><span class="tab-label">统计</span></button>
+			<button class="tab-item" data-nav="profile"><span class="tab-icon">我</span><span class="tab-label">我的</span></button>
+		</nav>
+	</main>
+
+	<script>
+		const screens = document.querySelectorAll('.app-screen');
+		const navButtons = document.querySelectorAll('[data-nav]');
+		const addSheet = document.getElementById('addSheet');
+
+		function showScreen(name) {
+			addSheet.classList.remove('open');
+			addSheet.setAttribute('aria-hidden', 'true');
+			document.querySelector('.app-frame').classList.toggle('detail-mode', ['shell', 'payday', 'subscriptions', 'aa'].includes(name));
+			screens.forEach((screen) => screen.classList.toggle('active', screen.dataset.screen === name));
+			document.querySelectorAll('.tab-item[data-nav]').forEach((button) => {
+				button.classList.toggle('active', button.dataset.nav === name);
+			});
+		}
+
+		navButtons.forEach((button) => {
+			button.addEventListener('click', () => showScreen(button.dataset.nav));
+		});
+
+		document.getElementById('openAdd').addEventListener('click', () => {
+			addSheet.classList.add('open');
+			addSheet.setAttribute('aria-hidden', 'false');
+		});
+
+		document.getElementById('closeAdd').addEventListener('click', () => {
+			addSheet.classList.remove('open');
+			addSheet.setAttribute('aria-hidden', 'true');
+		});
+
+		document.getElementById('finishAdd').addEventListener('click', () => {
+			addSheet.classList.remove('open');
+			addSheet.setAttribute('aria-hidden', 'true');
+			showScreen('category');
+		});
+	</script>
+</body>
+</html>

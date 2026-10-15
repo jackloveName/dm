@@ -1,0 +1,131 @@
+<svg width="900" height="1280" viewBox="0 0 900 1280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pageBg" x1="0" y1="0" x2="900" y2="1280" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF8F2"/>
+      <stop offset="1" stop-color="#F1EEE7"/>
+    </linearGradient>
+    <linearGradient id="heroBg" x1="70" y1="70" x2="830" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#143A55"/>
+      <stop offset="1" stop-color="#2C556F"/>
+    </linearGradient>
+    <linearGradient id="shellGlow" x1="260" y1="140" x2="550" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8D9DC"/>
+      <stop offset="0.48" stop-color="#E8B4BC"/>
+      <stop offset="1" stop-color="#7FB9A6"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#0D2839" flood-opacity="0.12"/>
+    </filter>
+    <filter id="smallShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0D2839" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="900" height="1280" rx="48" fill="url(#pageBg)"/>
+
+  <rect x="42" y="42" width="816" height="300" rx="42" fill="url(#heroBg)" filter="url(#shadow)"/>
+  <circle cx="760" cy="76" r="190" fill="#7FB9A6" fill-opacity="0.14"/>
+  <circle cx="110" cy="360" r="160" fill="#E8B4BC" fill-opacity="0.12"/>
+
+  <text x="88" y="112" fill="#BFE0D2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="24" font-weight="600" letter-spacing="5">SHELL GROWTH</text>
+  <text x="88" y="174" fill="#FBF8F2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="52" font-weight="800">贝壳养成等级</text>
+  <text x="88" y="218" fill="#D7E5E4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="23" font-weight="500">记录每一笔日常，解锁下一枚称号</text>
+
+  <g transform="translate(625 92)" filter="url(#smallShadow)">
+    <path d="M112 168C65 168 26 136 26 89C26 41 62 10 112 10C162 10 198 41 198 89C198 136 159 168 112 168Z" fill="url(#shellGlow)"/>
+    <path d="M57 70C76 55 93 48 112 48C132 48 149 55 168 70" stroke="#FBF8F2" stroke-opacity="0.64" stroke-width="6" stroke-linecap="round"/>
+    <path d="M51 98C73 84 92 78 112 78C133 78 151 84 173 98" stroke="#FBF8F2" stroke-opacity="0.52" stroke-width="6" stroke-linecap="round"/>
+    <path d="M61 125C80 114 96 109 112 109C129 109 145 114 164 125" stroke="#FBF8F2" stroke-opacity="0.42" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="112" cy="89" r="18" fill="#FBF8F2" fill-opacity="0.28"/>
+  </g>
+
+  <rect x="42" y="374" width="816" height="842" rx="36" fill="#FFFDF8" stroke="#DDE3E8" stroke-width="2" filter="url(#shadow)"/>
+  <text x="84" y="430" fill="#143A55" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="26" font-weight="800">成长称号</text>
+  <text x="816" y="430" text-anchor="end" fill="#7E8896" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="20" font-weight="600">Lv.1 - Lv.8</text>
+
+  <path d="M142 470V1142" stroke="#D5E8E8" stroke-width="4" stroke-linecap="round"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif">
+    <g transform="translate(0 468)">
+      <circle cx="142" cy="48" r="25" fill="#D2EDF1" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M134 52C134 40 142 32 153 32C164 32 172 40 172 51C172 63 163 70 153 70C142 70 134 63 134 52Z" fill="#1F8695" fill-opacity="0.88"/>
+      <path d="M143 47C146 43 150 41 154 41M141 54C145 50 150 48 156 48M143 61C147 58 151 56 155 56" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.1</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">小扇贝</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">初次拾贝</text>
+    </g>
+
+    <g transform="translate(0 552)">
+      <circle cx="142" cy="48" r="25" fill="#D5E8E8" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M132 58C132 42 140 31 153 31C166 31 174 42 174 58C162 63 145 63 132 58Z" fill="#3B6E89" fill-opacity="0.88"/>
+      <path d="M141 47C145 42 150 39 155 38M140 54C145 49 151 46 158 45" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.2</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">海螺</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">持续记录</text>
+    </g>
+
+    <g transform="translate(0 636)">
+      <circle cx="142" cy="48" r="25" fill="#F8D7C8" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M132 58C134 42 143 32 153 32C164 32 172 42 174 58C159 63 145 63 132 58Z" fill="#E07A5F" fill-opacity="0.88"/>
+      <path d="M142 48C147 43 151 40 156 39M140 55C146 50 152 47 159 46" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.3</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">花蛤</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">稳步积累</text>
+    </g>
+
+    <g transform="translate(0 720)">
+      <circle cx="142" cy="48" r="25" fill="#FBE5C8" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M130 58C132 40 141 30 153 30C166 30 176 42 176 58C161 64 145 64 130 58Z" fill="#B89570" fill-opacity="0.9"/>
+      <path d="M141 47C145 42 151 39 157 38M140 55C146 49 152 46 160 45" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.4</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">鲍鱼</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">养成习惯</text>
+    </g>
+
+    <g transform="translate(0 804)">
+      <circle cx="142" cy="48" r="25" fill="#E0D7F0" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M130 58C131 40 141 29 153 29C166 29 177 41 177 58C161 65 145 65 130 58Z" fill="#7555A4" fill-opacity="0.86"/>
+      <path d="M141 47C146 41 151 38 158 37M140 55C146 49 153 45 161 44" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.5</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">砗磲</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">稳定成长</text>
+    </g>
+
+    <g transform="translate(0 888)">
+      <circle cx="142" cy="48" r="25" fill="#D6EDDF" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M130 58C131 40 141 29 153 29C166 29 177 41 177 58C161 65 145 65 130 58Z" fill="#3F916F" fill-opacity="0.9"/>
+      <path d="M141 47C146 41 151 38 158 37M140 55C146 49 153 45 161 44" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.6</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">珍珠贝</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">收获光泽</text>
+    </g>
+
+    <g transform="translate(0 972)">
+      <circle cx="142" cy="48" r="25" fill="#D9DEF2" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M130 58C131 40 141 29 153 29C166 29 177 41 177 58C161 65 145 65 130 58Z" fill="#5261A3" fill-opacity="0.88"/>
+      <path d="M141 47C146 41 151 38 158 37M140 55C146 49 153 45 161 44" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.7</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">月光贝</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">温柔闪耀</text>
+    </g>
+
+    <g transform="translate(0 1056)">
+      <circle cx="142" cy="48" r="25" fill="#F3E4B8" stroke="#FFFDF8" stroke-width="8"/>
+      <path d="M130 58C131 40 141 29 153 29C166 29 177 41 177 58C161 65 145 65 130 58Z" fill="#B98925" fill-opacity="0.92"/>
+      <path d="M141 47C146 41 151 38 158 37M140 55C146 49 153 45 161 44" stroke="#FBF8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="192" y="11" width="120" height="74" rx="22" fill="#F7F2E8"/>
+      <text x="216" y="57" fill="#143A55" font-size="28" font-weight="800">Lv.8</text>
+      <text x="364" y="59" fill="#1A2530" font-size="31" font-weight="800">金贝</text>
+      <text x="816" y="58" text-anchor="end" fill="#9AA2AB" font-size="20" font-weight="600">闪耀满级</text>
+    </g>
+  </g>
+
+  <text x="84" y="1242" fill="#9AA2AB" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif" font-size="18" font-weight="500">每一次记录，都是向更好的财务习惯靠近。</text>
+</svg>

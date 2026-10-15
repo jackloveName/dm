@@ -1,0 +1,183 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/category/index",
+			"style": {
+				"navigationBarTitleText": "支出去向",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/stats/index",
+			"style": {
+				"navigationBarTitleText": "周期洞察",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/addOne/index",
+			"style": {
+				"navigationBarTitleText": "记一笔",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F8F4ED"
+			}
+		},
+		{
+			"path": "pages/bill/index",
+			"style": {
+				"navigationBarTitleText": "账单",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/budget/index",
+			"style": {
+				"navigationBarTitleText": "月度预算",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/paydayBudget/index",
+			"style": {
+				"navigationBarTitleText": "发薪日周期预算",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/objective/index",
+			"style": {
+				"navigationBarTitleText": "攒钱计划",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/objective/archive/index",
+			"style": {
+				"navigationBarTitleText": "计划归档",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/badge/index",
+			"style": {
+				"navigationBarTitleText": "我的徽章",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/shell/index",
+			"style": {
+				"navigationBarTitleText": "记录成长",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/aa/index",
+			"style": {
+				"navigationBarTitleText": "共同分账",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/subscriptions/index",
+			"style": {
+				"navigationBarTitleText": "自动扣费",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/mine/terms/index",
+			"style": {
+				"navigationBarTitleText": "协议",
+				"navigationStyle": "custom",
+				"backgroundColor": "#F7F2E8"
+			}
+		},
+		{
+			"path": "pages/mine/agreement/agreement",
+			"style": {
+				"navigationBarTitleText": "协议确认",
+				"navigationStyle": "default",
+				"backgroundColor": "#F7F2E8"
+			}
+		}
+	],
+  
+	"tabBar": {
+		"color": "#7e8896",
+		"selectedColor": "#143a55",
+		"borderStyle": "white",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/home/index",
+			"iconPath": "static/images/tabbar/icon_home.png",
+			"selectedIconPath": "static/images/tabbar/icon_home_active.png",
+			"text": "首页"
+		},{
+			"pagePath": "pages/category/index",
+			"iconPath": "static/images/tabbar/icon_category.png",
+			"selectedIconPath": "static/images/tabbar/icon_category_active.png",
+			"text": "分类"
+		},{
+			"pagePath": "pages/stats/index",
+			"iconPath": "static/images/tabbar/icon_stats.png",
+			"selectedIconPath": "static/images/tabbar/icon_stats_active.png",
+			"text": "统计"
+		},{
+			"pagePath": "pages/my/index",
+			"iconPath": "static/images/tabbar/icon_my.png",
+			"selectedIconPath": "static/images/tabbar/icon_my_active.png",
+			"text": "我的"
+		}],
+    "midButton": {
+      "width": "72px",
+      "height": "72px",
+      "text": "",
+      "iconPath": "static/images/tabbar/icon_add.png",
+      "iconWidth": "1px",
+      "backgroundImage": "static/images/tabbar/icon_add_bg.png"
+    }
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "哆米记账",
+		"navigationBarBackgroundColor": "#F7F2E8",
+		"backgroundColor": "#F7F2E8"
+	},
+	"uniIdRouter": {}
+}
